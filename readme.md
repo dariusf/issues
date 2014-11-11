@@ -1,4 +1,4 @@
 - [x] test
 - [ ] test
 
-[link](tree/master/tests)
+[link](https://github.com/dariusf/issues/tree/master/test)
