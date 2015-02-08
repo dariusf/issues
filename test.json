@@ -1,0 +1,9 @@
+var x = {
+    a:    1,
+    bthi: 2,
+    whc:  'lalalala'
+};
+
+[this]     is  terrible
+[somehti] lala eh
+
