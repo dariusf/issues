@@ -1,0 +1,36 @@
+
+apply plugin: 'java'
+
+String cupSpec = "$projectDir/grammar/parser.cup"
+String jFlexSpec = "$projectDir/grammar/lexer.flex"
+
+String cupLib = "$projectDir/lib/java-cup-11b.jar"
+String jFlexLib = "$projectDir/lib/JFlex.jar"
+
+String cupDest = "$projectDir/src/main/java/"
+String jFlexDest = "$projectDir/src/main/java/"
+
+task runJFlex(type:Exec) {
+    commandLine 'java', '-jar', jFlexLib, jFlexSpec, '-d', jFlexDest
+    standardOutput = new ByteArrayOutputStream()
+    doLast {
+        println standardOutput
+    }
+}
+
+task runJavaCup(type:Exec) {
+    commandLine 'java', '-jar', cupLib, '-destdir', cupDest, cupSpec
+    standardOutput = new ByteArrayOutputStream()
+    doLast {
+        println standardOutput
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Rectangle'
+    }
+}
+
+compileJava.dependsOn runJFlex
+compileJava.dependsOn runJavaCup

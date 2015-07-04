@@ -1,4 +1,6 @@
 out/
 .idea/
-redstone-compiler.iml
+*.iml
 .DS_Store
+build/
+.gradle/
