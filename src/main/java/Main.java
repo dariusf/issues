@@ -2,8 +2,18 @@ import java.io.StringReader;
 import java.util.Optional;
 
 import expr.Expr;
+import java.util.*;
 
 public class Main {
+
+    public static int FAKE_CONSTANT = 1;
+
+    public static class Proxy {
+        Date date;
+        public Proxy(Date date) {
+            this.date = date;
+        }
+    }
 
     private static Optional<Expr> parse(String s) {
         Expr result;
