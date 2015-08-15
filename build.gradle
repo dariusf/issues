@@ -1,7 +1,42 @@
 
-apply plugin: 'java'
+plugins {
+    id "com.github.johnrengelman.shadow" version "1.2.1"
+}
 
-apply plugin: 'findbugs'
+allprojects {
+
+    apply plugin: 'findbugs'
+
+    apply plugin: 'java'
+
+    // TODO: add group here (e.g. group = 'sg.edu.nus.comp.hubturbo')
+    version = '3.1.0'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://repo.eclipse.org/content/repositories/egit-releases/"
+        }
+    }
+
+    test {
+        forkEvery = 1
+
+        // uncomment to disable gui tests
+//        exclude 'guitests'
+    }
+
+    jar {
+        manifest {
+            attributes 'Main-Class': 'Rectangle'
+        }
+    }
+
+    assemble.dependsOn shadowJar
+}
 
 tasks.withType(FindBugs) {
     reports {
@@ -14,40 +49,6 @@ findbugs {
     excludeFilter = file("${projectDir}/config/findbugs/excludeFilter.xml")
 }
 
-dependencies {
-    compile files('lib/java-cup-11b-runtime.jar')
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4' //version required
 }
-
-String cupSpec = "$projectDir/grammar/parser.cup"
-String jFlexSpec = "$projectDir/grammar/lexer.flex"
-
-String cupLib = "$projectDir/lib/java-cup-11b.jar"
-String jFlexLib = "$projectDir/lib/JFlex.jar"
-
-String cupDest = "$projectDir/src/main/java/"
-String jFlexDest = "$projectDir/src/main/java/"
-
-task runJFlex(type:Exec) {
-    commandLine 'java', '-jar', jFlexLib, jFlexSpec, '-d', jFlexDest
-    standardOutput = new ByteArrayOutputStream()
-    doLast {
-        println standardOutput
-    }
-}
-
-task runJavaCup(type:Exec) {
-    commandLine 'java', '-jar', cupLib, '-destdir', cupDest, cupSpec
-    standardOutput = new ByteArrayOutputStream()
-    doLast {
-        println standardOutput
-    }
-}
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'Rectangle'
-    }
-}
-
-compileJava.dependsOn runJFlex
-compileJava.dependsOn runJavaCup
