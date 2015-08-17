@@ -1,0 +1,2 @@
+beautifulsoup4==4.4.0
+PyGithub==1.25.2
