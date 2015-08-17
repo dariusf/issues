@@ -63,6 +63,9 @@ def get_unified_diff_line(file_diff, file_line):
 
 # -----
 
+# This is the commit 'Added a few violations', which introduces problems in Main.java
+sha_from = 'f1e3a2f'
+sha_to = 'b91cc3c'
 
 prefix = 'src/main/java/'
 
@@ -77,17 +80,18 @@ for e in example_data:
 
 # -----
 
+files = git_diff_files(sha_from, sha_to)
+
+comments_to_make = [c for c in example_data if c[0] in files]
+
+for c in comments_to_make:
+    result = get_unified_diff_line(git_diff(sha_from, sha_to, c[0]), int(c[1]))
+    print "Comment '%s' on diff line %d of %s" % (c[2] + ': ' + c[3], result, c[0])
+
+# -----
+
 # 'Tests'
 
 # print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43) # 6
 # print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6) # 8
 # print get_unified_diff_line(git_diff('cf088b8', 'e3e123f'), 6) # 6
-
-# This is the commit 'Added a few violations', which introduces problems in Main.java
-files = git_diff_files('f1e3a2f', 'b91cc3c')
-
-comments_to_make = [c for c in example_data if c[0] in files]
-
-for c in comments_to_make:
-    result = get_unified_diff_line(git_diff('f1e3a2f', 'b91cc3c', c[0]), int(c[1]))
-    print "Comment '%s' on diff line %d of %s" % (c[2] + ': ' + c[3], result, c[0])
