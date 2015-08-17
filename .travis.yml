@@ -14,7 +14,7 @@ branches:
     - master
 
 after_failure:
-    - "echo 'hi'"
+    - "python bugcomment.py"
 
 addons:
   apt:
