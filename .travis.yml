@@ -14,7 +14,7 @@ branches:
     - master
 
 after_failure:
-    - "pip install PyGithub"
+    - "sudo pip install PyGithub"
     - "python bugcomment.py"
 
 addons:
