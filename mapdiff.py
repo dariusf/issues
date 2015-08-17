@@ -64,8 +64,7 @@ def get_unified_diff_line(file_diff, file_line):
 # -----
 
 # This is the commit 'Added a few violations', which introduces problems in Main.java
-sha_from = 'f1e3a2f'
-sha_to = 'b91cc3c'
+sha = 'b91cc3c'
 
 prefix = 'src/main/java/'
 
@@ -80,12 +79,12 @@ for e in example_data:
 
 # -----
 
-files = git_diff_files(sha_from, sha_to)
+files = git_diff_files(sha + '^', sha)
 
 comments_to_make = [c for c in example_data if c[0] in files]
 
 for c in comments_to_make:
-    result = get_unified_diff_line(git_diff(sha_from, sha_to, c[0]), int(c[1]))
+    result = get_unified_diff_line(git_diff(sha + '^', sha, c[0]), int(c[1]))
     print "Comment '%s' on diff line %d of %s" % (c[2] + ': ' + c[3], result, c[0])
 
 # -----
