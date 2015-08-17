@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 from github import Github
 
 from mapdiff import *
+from findbugsbugsdescriptions import *
 
 K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
 
@@ -32,15 +33,15 @@ def comment_bugs_on_github(sha):
         diff_line = int(c[1])
         category = c[2]
         _type = c[3]
-        comment = category + " : " + _type
+
+        title, description = get_description(_type)
+
+        comment = "["+category + "] : " + title + "\n" + description
 
         pos = get_unified_diff_line(git_diff(sha + '^', sha, src), diff_line)
         print "Comment '%s' on diff line %d of %s" % (comment, pos, src)
 
         commit.create_comment(body=comment, path=src, position=pos)
-
-
-
 
 
 def test_github_comment():
@@ -58,8 +59,8 @@ def test_github_comment():
 
 
     # Test comment
-    body = "HELLO WORLD"
-    position = 1
+    body = "HELLO WORLD comment on pos 0"
+    position = 0
     path = "mapdiff.py"
 
     commit.create_comment(body=body, path=path, position=position)
