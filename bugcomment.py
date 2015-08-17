@@ -34,10 +34,10 @@ def comment_bugs_on_github(sha):
         _type = c[3]
         comment = category + " : " + _type
 
-        result = get_unified_diff_line(git_diff(sha + '^', sha, src), diff_line)
-        print "Comment '%s' on diff line %d of %s" % (comment, result, src)
+        pos = get_unified_diff_line(git_diff(sha + '^', sha, src), diff_line)
+        print "Comment '%s' on diff line %d of %s" % (comment, pos, src)
 
-        commit.create_comment(body=comment, path=src, position=diff_line)
+        commit.create_comment(body=comment, path=src, position=pos)
 
 
 
