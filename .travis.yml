@@ -14,9 +14,11 @@ branches:
     - master
 
 after_failure:
+    - "pip install PyGithub"
     - "python bugcomment.py"
 
 addons:
   apt:
     packages:
       - oracle-java8-installer
+      - python-pip
