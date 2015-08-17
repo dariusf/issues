@@ -5,25 +5,25 @@ from subprocess import Popen, PIPE
 
 # http://stackoverflow.com/a/24456418
 
-def git_diff(commit_start, commit_end, for_file=None):
-    if for_file:
-        args = ['git', 'diff', commit_start, commit_end, for_file]
-    else:
-        args = ['git', 'diff', commit_start, commit_end]
+def shell(args):
     process = Popen(args, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
     if not stderr:
         return stdout
     else:
-        raise RuntimeError('Cannot get `git diff` output')
+        raise RuntimeError('Cannot get `%s` output' % ' '.join(args))
+
+def current_head():
+    return shell(['git', 'rev-parse', 'HEAD']).strip()
+
+def git_diff(commit_start, commit_end, for_file=None):
+    if for_file:
+        return shell(['git', 'diff', commit_start, commit_end, for_file])
+    else:
+        return shell(['git', 'diff', commit_start, commit_end])
 
 def git_diff_files(commit_start, commit_end):
-    process = Popen(['git', 'diff', '--name-only', commit_start, commit_end], stdout=PIPE, stderr=PIPE)
-    stdout, stderr = process.communicate()
-    if not stderr:
-        return [l for l in stdout.split('\n') if l.strip()]
-    else:
-        raise RuntimeError('Cannot get `git diff --name-only` output')
+    return shell(['git', 'diff', '--name-only', commit_start, commit_end])
 
 def get_unified_diff_line(file_diff, file_line):
     """
