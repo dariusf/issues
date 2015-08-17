@@ -36,5 +36,5 @@ def get_unified_diff_line(diff, file_line):
             break
     return new_file_diff_line + minuses
 
-print get_unified_diff_line(git_diff('HEAD^', 'HEAD'), 43)
-print get_unified_diff_line(git_diff('HEAD^^^', 'HEAD^^'), 6)
+print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43)
+print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6)
