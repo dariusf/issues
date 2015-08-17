@@ -12,7 +12,7 @@ public class Rectangle {
 
     public Rectangle() {
         this(5, 3, null, null);
-        Useless = "sdaA";
+        Useless = "sdaAa";
     }
 
     public Rectangle(int width, int height) {
