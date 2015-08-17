@@ -20,9 +20,9 @@ public class Main {
 
     }
 
+    private int useless = 1;
+    private int moreuseless = 0;
     public static void main(String[] args) {
-        int useless = 1;
-        int moreuseless = 0;
         test("1");
         test("0");
         test("1 & 0");

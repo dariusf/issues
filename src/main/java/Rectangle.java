@@ -8,9 +8,10 @@ public class Rectangle {
     public final Rectangle left;
     public final Rectangle right;
 
+    private String Useless = "hahaha";
+
     public Rectangle() {
         this(5, 3, null, null);
-        String useless = "hahaha";
     }
 
     public Rectangle(int width, int height) {
