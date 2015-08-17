@@ -17,10 +17,12 @@ public class Main {
 
     private static void test(String s) {
         System.out.println("hello");
+
     }
 
     public static void main(String[] args) {
         int useless = 1;
+        int moreuseless = 0;
         test("1");
         test("0");
         test("1 & 0");
