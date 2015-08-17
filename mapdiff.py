@@ -12,7 +12,14 @@ def git_diff(commit_start, commit_end):
 
 def get_unified_diff_line(diff, file_line):
     lines = diff.split('\n')
-    diff_lines = lines[4:]
+
+    diff_start = 0
+    for line in lines:
+        if line.startswith('@@'):
+            break
+        diff_start += 1
+
+    diff_lines = lines[diff_start:]
     diff_lines_without_header = diff_lines[1:]
 
     new_file_info = re.search(r'\+(\d+),(\d+)', diff_lines[0])
@@ -38,3 +45,5 @@ def get_unified_diff_line(diff, file_line):
 
 print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43)
 print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6)
+print get_unified_diff_line(git_diff('cf088b8', 'e3e123f'), 6)
+
