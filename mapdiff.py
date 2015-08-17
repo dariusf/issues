@@ -59,7 +59,13 @@ def get_unified_diff_line(file_diff, file_line):
 
         if remaining < 0:
             break
-    return new_file_diff_line + minuses
+
+    result = new_file_diff_line + minuses
+
+    if result <= 0 or result >= start + count:
+        return None
+
+    return result
 
 # -----
 
