@@ -13,7 +13,7 @@ def comment_bugs_on_github(sha=None):
     repo = g.get_repo("dariusf/issues")
 
     if not sha:
-        sha = repo.get_commits()[0].sha
+        sha = current_head()
 
     commit = repo.get_commit(sha)
 
