@@ -63,34 +63,36 @@ def get_unified_diff_line(file_diff, file_line):
 
 # -----
 
-# This is the commit 'Added a few violations', which introduces problems in Main.java
-sha = 'b91cc3c'
+if __name__ == "__main__":
 
-prefix = 'src/main/java/'
+    # This is the commit 'Added a few violations', which introduces problems in Main.java
+    sha = 'b91cc3c'
 
-example_data = [
-    ['Main.java', '14', 'MALICIOUS_CODE', 'EI_EXPOSE_REP2'],
-    ['Main.java', '14', 'PERFORMANCE', 'URF_UNREAD_FIELD'],
-    ['expr/Or.java', '17', 'BAD_PRACTICE', 'EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS']
-]
+    prefix = 'src/main/java/'
 
-for e in example_data:
-    e[0] = prefix + e[0]
+    example_data = [
+        ['Main.java', '14', 'MALICIOUS_CODE', 'EI_EXPOSE_REP2'],
+        ['Main.java', '14', 'PERFORMANCE', 'URF_UNREAD_FIELD'],
+        ['expr/Or.java', '17', 'BAD_PRACTICE', 'EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS']
+    ]
 
-# -----
+    for e in example_data:
+        e[0] = prefix + e[0]
 
-files = git_diff_files(sha + '^', sha)
+    # -----
 
-comments_to_make = [c for c in example_data if c[0] in files]
+    files = git_diff_files(sha + '^', sha)
 
-for c in comments_to_make:
-    result = get_unified_diff_line(git_diff(sha + '^', sha, c[0]), int(c[1]))
-    print "Comment '%s' on diff line %d of %s" % (c[2] + ': ' + c[3], result, c[0])
+    comments_to_make = [c for c in example_data if c[0] in files]
 
-# -----
+    for c in comments_to_make:
+        result = get_unified_diff_line(git_diff(sha + '^', sha, c[0]), int(c[1]))
+        print "Comment '%s' on diff line %d of %s" % (c[2] + ': ' + c[3], result, c[0])
 
-# 'Tests'
+    # -----
 
-# print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43) # 6
-# print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6) # 8
-# print get_unified_diff_line(git_diff('cf088b8', 'e3e123f'), 6) # 6
+    # 'Tests'
+
+    # print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43) # 6
+    # print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6) # 8
+    # print get_unified_diff_line(git_diff('cf088b8', 'e3e123f'), 6) # 6
