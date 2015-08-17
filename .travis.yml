@@ -1,0 +1,24 @@
+language: java
+
+jdk:
+    - oraclejdk8
+
+env:
+    - TERM=dumb
+
+script:
+    - "./gradlew clean check -i --continue"
+
+branches:
+  only:
+    - master
+
+after_failure:
+    - "sudo pip install PyGithub"
+    - "python bugcomment.py"
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+      - python-pip

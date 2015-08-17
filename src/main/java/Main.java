@@ -10,8 +10,10 @@ public class Main {
 
     public static class Proxy {
         Date date;
+        Date date2;
         public Proxy(Date date) {
             this.date = date;
+            this.date2 = date;
         }
     }
 

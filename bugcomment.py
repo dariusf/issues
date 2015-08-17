@@ -7,10 +7,14 @@ from findbugsbugsdescriptions import *
 K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
 
 
-def comment_bugs_on_github(sha):
+def comment_bugs_on_github(sha=None):
 
     g = Github(K[::-1])
     repo = g.get_repo("dariusf/issues")
+
+    if not sha:
+        sha = repo.get_commits()[0].sha
+
     commit = repo.get_commit(sha)
 
     comment_data = get_comments_from_XML()
@@ -113,4 +117,4 @@ if __name__ == "__main__":
     # Parses XML
     #print get_comments_from_XML()
 
-    comment_bugs_on_github('b91cc3c0fb06803dc08e5d01ccfc1b19f33af87f')
+    comment_bugs_on_github()
