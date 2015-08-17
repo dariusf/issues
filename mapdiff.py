@@ -1,17 +1,35 @@
 
 import re
+import os
 from subprocess import Popen, PIPE
 
-def git_diff(commit_start, commit_end):
-    process = Popen(['git', 'diff', commit_start, commit_end], stdout=PIPE, stderr=PIPE)
+# http://stackoverflow.com/a/24456418
+
+def git_diff(commit_start, commit_end, for_file=None):
+    if for_file:
+        args = ['git', 'diff', commit_start, commit_end, for_file]
+    else:
+        args = ['git', 'diff', commit_start, commit_end]
+    process = Popen(args, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
     if not stderr:
         return stdout
     else:
         raise RuntimeError('Cannot get `git diff` output')
 
-def get_unified_diff_line(diff, file_line):
-    lines = diff.split('\n')
+def git_diff_files(commit_start, commit_end):
+    process = Popen(['git', 'diff', '--name-only', commit_start, commit_end], stdout=PIPE, stderr=PIPE)
+    stdout, stderr = process.communicate()
+    if not stderr:
+        return [l for l in stdout.split('\n') if l.strip()]
+    else:
+        raise RuntimeError('Cannot get `git diff --name-only` output')
+
+def get_unified_diff_line(file_diff, file_line):
+    """
+    Should only be used on single file diffs
+    """
+    lines = file_diff.split('\n')
 
     diff_start = 0
     for line in lines:
@@ -43,7 +61,33 @@ def get_unified_diff_line(diff, file_line):
             break
     return new_file_diff_line + minuses
 
-print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43)
-print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6)
-print get_unified_diff_line(git_diff('cf088b8', 'e3e123f'), 6)
+# -----
 
+
+prefix = 'src/main/java/'
+
+example_data = [
+    ['Main.java', '14', 'MALICIOUS_CODE', 'EI_EXPOSE_REP2'],
+    ['Main.java', '14', 'PERFORMANCE', 'URF_UNREAD_FIELD'],
+    ['expr/Or.java', '17', 'BAD_PRACTICE', 'EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS']
+]
+
+for e in example_data:
+    e[0] = prefix + e[0]
+
+# -----
+
+# 'Tests'
+
+# print get_unified_diff_line(git_diff('05cc3fc', 'cf088b8'), 43) # 6
+# print get_unified_diff_line(git_diff('b91cc3c', 'c7df16a'), 6) # 8
+# print get_unified_diff_line(git_diff('cf088b8', 'e3e123f'), 6) # 6
+
+# This is the commit 'Added a few violations', which introduces problems in Main.java
+files = git_diff_files('f1e3a2f', 'b91cc3c')
+
+comments_to_make = [c for c in example_data if c[0] in files]
+
+for c in comments_to_make:
+    result = get_unified_diff_line(git_diff('f1e3a2f', 'b91cc3c', c[0]), int(c[1]))
+    print "Comment '%s' on diff line %d of %s" % (c[2] + ': ' + c[3], result, c[0])
