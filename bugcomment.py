@@ -38,9 +38,7 @@ def comment_bugs_on_github(sha=None):
         category = c[2]
         _type = c[3]
 
-        title, description = get_description(_type)
-
-        comment = "["+category + "] : " + title + "\n" + description
+        comment = get_description(_type)
 
         pos = get_unified_diff_line(git_diff(sha + '^', sha, src), diff_line)
         if pos is not None:
