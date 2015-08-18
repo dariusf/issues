@@ -12,8 +12,8 @@ script:
     - "./gradlew clean check -i --continue"
 
 branches:
-  only:
-    - master
+  except:
+    - no-ci
 
 before_script:
     - "export PATH=$HOME/.local/bin:$PATH"
