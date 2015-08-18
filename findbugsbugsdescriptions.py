@@ -5,12 +5,10 @@ soup = BeautifulSoup(open("FindBugsBugDescriptions.html"), 'html.parser')
 
 def clean_html(html):
     encoded_str = html.encode("utf8")
-    text = re.sub(' +', ' ', encoded_str)
-    text = re.sub('\n', '', text).lstrip()
-    return text
+    return re.sub(r'[\s]+', ' ', encoded_str).strip()
 
 def get_description(code):
-    a_tag = soup.find_all(attrs={"name" : code})[0]
+    a_tag = soup.find_all(attrs={"name": code})[0]
 
     desc = a_tag.parent.findNext('p').contents[0]
 
@@ -20,4 +18,4 @@ def get_description(code):
 
 
 if __name__ == "__main__":
-    print get_description('EI_EXPOSE_REP2')
+    print get_description('ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD')
