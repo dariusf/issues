@@ -9,7 +9,7 @@ def clean_html(html):
 
 def format_title(title):
     print title
-    match = re.match(r'[A-Z]+: ([^()]+) \(([^()]+)\)', title)
+    match = re.match(r'[\w\d]+: ([^()]+) \(([^()]+)\)', title)
     header = match.group(1).strip()
     footer = match.group(2).strip()
     return header, footer
