@@ -6,6 +6,7 @@ from findbugsbugsdescriptions import *
 
 K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
 
+FINDBUGS_XML = 'build/reports/findbugs/main.xml'
 REPO_NAME = "dariusf/issues"
 env_commit = os.environ.get('TRAVIS_COMMIT')
 env_pull_request_id = os.environ.get('TRAVIS_PULL_REQUEST')
@@ -15,12 +16,15 @@ print env_commit, env_pull_request_id
 
 def test_pull_request_apis():
 
+    assert not isinstance(env_pull_request_id, basestring)
+
+    env_pull_request_id = int(env_pull_request_id)
     env_pull_request_id = 62
 
     g = Github(K[::-1])
     repo = g.get_repo(REPO_NAME)
 
-    pull = repo.get_pull(int(env_pull_request_id))
+    pull = repo.get_pull(env_pull_request_id)
 
     print pull.title
     print pull.body
@@ -105,7 +109,7 @@ def test_github_comment():
 def get_comments_from_XML():
 
     # Parse this xml file
-    tree = ET.parse('build/reports/findbugs/main.xml')
+    tree = ET.parse(FINDBUGS_XML)
     root = tree.getroot()
 
     comments_on_line = []
