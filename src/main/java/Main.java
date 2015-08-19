@@ -11,7 +11,7 @@ public class Main {
     public static class Proxy {
         Date date;
         public Proxy(Date date) {
-            FAKE_CONSTANT = 3;
+            FAKE_CONSTANT = 2;
             this.date = date;
         }
     }
