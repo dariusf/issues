@@ -6,19 +6,20 @@ from findbugsbugsdescriptions import *
 
 K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
 
+REPO_NAME = "dariusf/issues"
 env_commit = os.environ.get('TRAVIS_COMMIT')
-env_pull = os.environ.get('TRAVIS_PULL_REQUEST')
+env_pull_request_id = os.environ.get('TRAVIS_PULL_REQUEST')
 
-print env_commit, env_pull
+print env_commit, env_pull_request_id
 
 
-def test_pull_apis():
-    env_pull = 62
+def test_pull_request_apis():
+    env_pull_request_id = 62
 
     g = Github(K[::-1])
-    repo = g.get_repo("dariusf/issues")
+    repo = g.get_repo(REPO_NAME)
 
-    pull = repo.get_pull(env_pull)
+    pull = repo.get_pull(env_pull_request_id)
 
     print pull.title
     print pull.body
@@ -31,7 +32,7 @@ def test_pull_apis():
 def comment_bugs_on_github(sha=None):
 
     g = Github(K[::-1])
-    repo = g.get_repo("dariusf/issues")
+    repo = g.get_repo(REPO_NAME)
 
     if not sha:
         sha = current_head()
@@ -69,7 +70,7 @@ def comment_bugs_on_github(sha=None):
 
 def test_github_comment():
     g = Github(K[::-1])
-    repo = g.get_repo("dariusf/issues")
+    repo = g.get_repo(REPO_NAME)
 
     print "Repo:", repo.name
     print "Repo URL:", repo.html_url
@@ -137,6 +138,6 @@ if __name__ == "__main__":
     #print get_comments_from_XML()
 
     # Test pull request APIs
-    test_pull_apis()
+    test_pull_request_apis()
 
     #comment_bugs_on_github()
