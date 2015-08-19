@@ -23,5 +23,3 @@ before_script:
 
 after_failure:
     - "python bugcomment.py"
-
-cache: pip
