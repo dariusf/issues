@@ -1,10 +1,31 @@
+import os
 import xml.etree.ElementTree as ET
 from github import Github
-
 from mapdiff import *
 from findbugsbugsdescriptions import *
 
 K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
+
+env_commit = os.environ.get('TRAVIS_COMMIT')
+env_pull = os.environ.get('TRAVIS_PULL_REQUEST')
+
+print env_commit, env_pull
+
+
+def test_pull_apis():
+    env_pull = 62
+
+    g = Github(K[::-1])
+    repo = g.get_repo("dariusf/issues")
+
+    pull = repo.get_pull(env_pull)
+
+    print pull.title
+    print pull.body
+    # Base commit
+    print pull.base.sha
+
+    pull.create_issue_comment("Test create_issue_comment")
 
 
 def comment_bugs_on_github(sha=None):
@@ -115,4 +136,7 @@ if __name__ == "__main__":
     # Parses XML
     #print get_comments_from_XML()
 
-    comment_bugs_on_github()
+    # Test pull request APIs
+    test_pull_apis()
+
+    #comment_bugs_on_github()
