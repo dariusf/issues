@@ -6,6 +6,7 @@ from findbugsbugsdescriptions import *
 
 K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
 
+SOURCE_FILE_PREFIX = 'src/main/java/'
 FINDBUGS_XML = 'build/reports/findbugs/main.xml'
 REPO_NAME = "dariusf/issues"
 env_commit = os.environ.get('TRAVIS_COMMIT')
@@ -60,11 +61,6 @@ def comment_bugs_on_github(sha=None):
     print "Repo:", repo.name
     print "Repo URL:", repo.html_url
     print "Commit message:", commit.commit.message
-
-    # Add prefix to source file names
-    prefix = 'src/main/java/'
-    for e in comment_data:
-        e[0] = prefix + e[0]
 
     # -----
     files = git_diff_files(sha + '^', sha)
@@ -135,7 +131,7 @@ def get_comments_from_XML():
                     break
 
             if srcFile != "" and srcLine != -1:
-                comment = [srcFile, srcLine, category, bugType]
+                comment = [SOURCE_FILE_PREFIX + srcFile, srcLine, category, bugType]
                 comments_on_line.append(comment)
             else:
                 comment = [category, bugType]
