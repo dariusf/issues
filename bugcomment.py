@@ -26,7 +26,10 @@ def test_pull_request_apis():
     # Base commit
     print pull.base.sha
 
-    pull.create_issue_comment("Test create_issue_comment")
+    head_sha = current_head()
+
+    # pull.create_issue_comment("Test create_issue_comment")
+    pull.create_review_comment(body="test comment on pr", commit_id=env_commit, path='.travis.yml', position=1)
 
 
 def comment_bugs_on_github(sha=None):
