@@ -18,7 +18,7 @@ def test_pull_request_apis():
     g = Github(K[::-1])
     repo = g.get_repo(REPO_NAME)
 
-    pull = repo.get_pull(env_pull_request_id)
+    pull = repo.get_pull(int(env_pull_request_id))
 
     print pull.title
     print pull.body
