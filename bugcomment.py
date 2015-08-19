@@ -28,7 +28,10 @@ def test_pull_request_apis():
     head_sha = current_head()
 
     # pull.create_issue_comment("Test create_issue_comment")
-    pull.create_review_comment(body='test comment on pr by travis', commit_id=repo.get_commit(env_commit), path='bugcomment.py', position=4)
+    pull.create_review_comment(body='test comment on pr by travis',
+                               commit_id=repo.get_commit(head_sha),
+                               path='bugcomment.py',
+                               position=4)
 
 
 def comment_bugs_on_github(sha=None):

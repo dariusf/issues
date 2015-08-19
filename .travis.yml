@@ -25,5 +25,6 @@ after_failure:
 addons:
   apt:
     packages:
-      - oracle-java8-installer
       - python-pip
+
+cache: pip
