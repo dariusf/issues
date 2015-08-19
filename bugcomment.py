@@ -14,7 +14,6 @@ print env_commit, env_pull_request_id
 
 
 def test_pull_request_apis():
-    env_pull_request_id = 62
 
     g = Github(K[::-1])
     repo = g.get_repo(REPO_NAME)
@@ -29,7 +28,7 @@ def test_pull_request_apis():
     head_sha = current_head()
 
     # pull.create_issue_comment("Test create_issue_comment")
-    pull.create_review_comment(body='test comment on pr', commit_id=repo.get_commit(env_commit), path='bugcomment.py', position=4)
+    pull.create_review_comment(body='test comment on pr by travis', commit_id=repo.get_commit(env_commit), path='bugcomment.py', position=4)
 
 
 def comment_bugs_on_github(sha=None):
