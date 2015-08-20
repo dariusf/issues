@@ -11,17 +11,17 @@ public class Main {
     public static class Proxy {
         Date date;
         public Proxy(Date date) {
-            FAKE_CONSTANT = 2;
+            FAKE_CONSTANT = 4;
             this.date = date;
         }
     }
 
     private static void test(String s) {
-        System.out.println("hello");
+        System.out.println("hellooo");
 
     }
 
-    private int useless = 1;
+    private int useless = 13;
     private int moreuseless = 0;
     public static void main(String[] args) {
         test("1");
