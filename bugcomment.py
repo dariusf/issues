@@ -65,8 +65,13 @@ def main():
         pos = get_unified_diff_line(git_diff(base_sha, head_sha, src), diff_line)
         if pos is not None:
             print "Comment '%s' on diff line %d of %s" % (comment, pos, src)
-            commit.create_comment(body=comment, path=src, position=pos)
-
+            if pull is None:
+                head_commit.create_comment(body=comment, path=src, position=pos)
+            else:
+                pull.create_review_comment(body=comment,
+                               commit_id=head_commit,
+                               path=src,
+                               position=pos)
 
 
 def test_pull_request_apis():
