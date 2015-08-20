@@ -19,7 +19,6 @@ print env_commit, env_pull_request_id
 
 def main():
     global env_pull_request_id
-    env_pull_request_id = 62
 
     # Login and get repo
     g = Github(K[::-1])
