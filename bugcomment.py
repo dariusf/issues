@@ -9,10 +9,65 @@ K = "f0cb04f911da0a3211f16a451c0fc47acc1bd52a"
 SOURCE_FILE_PREFIX = 'src/main/java/'
 FINDBUGS_XML = 'build/reports/findbugs/main.xml'
 REPO_NAME = "dariusf/issues"
+env_commit = None
+env_pull_request_id = None
 env_commit = os.environ.get('TRAVIS_COMMIT')
 env_pull_request_id = os.environ.get('TRAVIS_PULL_REQUEST')
 
 print env_commit, env_pull_request_id
+
+
+def main():
+    global env_pull_request_id
+    env_pull_request_id = 62
+
+    # Login and get repo
+    g = Github(K[::-1])
+    repo = g.get_repo(REPO_NAME)    
+
+    head_sha = current_head()
+    base_sha = head_sha + '^'
+
+    pull = None
+    head_commit = None
+    base_commit = None
+
+    # Check if pull request or just a commit
+    if env_pull_request_id is not None and env_pull_request_id != 'false':
+        env_pull_request_id = int(env_pull_request_id)
+        pull = repo.get_pull(env_pull_request_id)
+        head_sha = pull.head.sha
+        base_sha = pull.base.sha
+
+    head_commit = repo.get_commit(head_sha)
+    base_commit = repo.get_commit(base_sha)
+    base_sha = base_commit.sha
+
+    print 'head: ', head_sha
+    print 'base: ', base_sha
+
+    # We have the correct head and base now
+
+    # Get comments
+    comment_data = get_comments_from_XML()
+
+    # Files to comment on
+    files = git_diff_files(base_sha, head_sha)
+    comments_to_make = [c for c in comment_data if c[0] in files]
+
+    for c in comments_to_make:
+        src = c[0]
+        diff_line = int(c[1])
+        category = c[2]
+        _type = c[3]
+
+        comment = get_description(_type)
+
+        pos = get_unified_diff_line(git_diff(base_sha, head_sha, src), diff_line)
+        if pos is not None:
+            print "Comment '%s' on diff line %d of %s" % (comment, pos, src)
+            commit.create_comment(body=comment, path=src, position=pos)
+
 
 
 def test_pull_request_apis():
@@ -150,6 +205,9 @@ if __name__ == "__main__":
     #print get_comments_from_XML()
 
     # Test pull request APIs
-    test_pull_request_apis()
+    #test_pull_request_apis()
 
     #comment_bugs_on_github()
+
+    main()
+
