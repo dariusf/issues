@@ -209,9 +209,9 @@ if __name__ == "__main__":
     #print get_comments_from_XML()
 
     # Test pull request APIs
-    #test_pull_request_apis()
+    test_pull_request_apis()
 
     #comment_bugs_on_github()
 
-    main()
+    #main()
 
