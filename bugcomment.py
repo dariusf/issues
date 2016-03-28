@@ -49,7 +49,6 @@ def comment_bugs_on_github(sha=None):
     for e in comment_data:
         e[0] = prefix + e[0]
 
-    # -----
     files = git_diff_files(sha + '^', sha)
     comments_to_make = [c for c in comment_data if c[0] in files]
 
@@ -100,18 +99,13 @@ def get_comments_from_XML():
 
     for bug_instance in root:
         if bug_instance.tag == "BugInstance":
-            #print "---"
-            #print bug_instance.tag, bug_instance.attrib
-            #print bug_instance.attrib['category']
-            #print bug_instance.attrib['type']
-
             category = bug_instance.attrib['category']
             bugType = bug_instance.attrib['type']
             srcFile = ""
             srcLine = -1
             
             for attr in bug_instance:
-                #print attr.tag, attr.attrib
+
                 if attr.tag == "SourceLine":
                     srcFile = attr.attrib['sourcepath']
                     srcLine = attr.attrib['start']
@@ -124,19 +118,10 @@ def get_comments_from_XML():
                 comment = [category, bugType]
                 general_comments.append(comment)
 
-    #print comments_on_line
-    #print general_comments
 
     return comments_on_line
 
 if __name__ == "__main__":
-    # Uncomment to comment
-    #test_github_comment()
-
-    # Parses XML
-    #print get_comments_from_XML()
-
     # Test pull request APIs
     test_pull_apis()
 
-    #comment_bugs_on_github()
